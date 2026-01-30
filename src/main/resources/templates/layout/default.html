@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$CONTENT_TITLE - News Service">News Service</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <div class="header-container">
+            <h1 class="logo">
+                <a th:href="@{/}">News Service</a>
+            </h1>
+            <form class="search-form" th:action="@{/search}" method="get">
+                <input type="text" name="q" class="search-input" placeholder="뉴스 검색...">
+                <button type="submit" class="search-btn">검색</button>
+            </form>
+        </div>
+    </header>
+
+    <!-- 컨텐츠 영역 -->
+    <main class="content">
+        <div class="container">
+            <div layout:fragment="content"></div>
+        </div>
+    </main>
+
+    <!-- 푸터 영역 -->
+    <footer class="footer">
+        <div class="container">
+            <p>본 서비스의 뉴스 콘텐츠는 각 언론사의 RSS 피드를 기반으로 하며, 저작권은 원 저작자에게 있습니다.</p>
+            <p>&copy; 2024 News Service. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: news-service
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+server:
+  port: 8080
+
+news:
+  rss:
+    feeds:
+      - name: 연합뉴스
+        url: https://www.yna.co.kr/rss/news.xml
+      - name: 구글뉴스
+        url: https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko
+      - name: 조선일보
+        url: https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml
+      - name: 매일경제
+        url: https://www.mk.co.kr/rss/40300001/
+
+
+elasticsearch:
+  enabled: ${ES_ENABLED:false}
+  url: ${ES_URL:}
+  username: ${ES_USERNAME:}
+  password: ${ES_PASSWORD:}
+  index-name: ${ES_INDEX:news}

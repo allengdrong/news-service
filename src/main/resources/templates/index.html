@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>홈</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="hero">
+            <h2>News Service</h2>
+            <p>최신 뉴스를 빠르게 전달합니다.</p>
+        </section>
+
+        <section class="news-section">
+            <h3 class="section-title">최신 뉴스 <span class="total-count" th:text="'(' + ${newsPage.totalElements} + '건)'"></span></h3>
+            <div class="news-grid">
+                <article class="news-card" th:each="news : ${newsPage.content}">
+                    <div class="news-thumbnail">
+                        <img th:src="${news.thumbnailUrl != null ? news.thumbnailUrl : '/images/default-news.svg'}"
+                             th:alt="${news.title}"
+                             onerror="this.src='/images/default-news.svg'">
+                    </div>
+                    <div class="news-card-body">
+                        <h4 class="news-title">
+                            <a th:href="${news.url}" th:text="${news.title}" target="_blank" rel="noopener"></a>
+                        </h4>
+                        <p class="news-summary" th:text="${news.summary}"></p>
+                    </div>
+                    <div class="news-card-footer">
+                        <span class="news-publisher" th:text="${news.publisher}"></span>
+                        <span class="news-time" th:text="${news.relativeTime}"></span>
+                    </div>
+                </article>
+            </div>
+
+            <!-- 페이징 -->
+            <nav class="pagination" th:if="${newsPage.totalPages > 1}">
+                <a th:href="@{/(page=${newsPage.firstPage})}"
+                   th:class="${newsPage.isFirst() ? 'page-link disabled' : 'page-link'}">&laquo;</a>
+                <a th:href="@{/(page=${newsPage.previousPage})}"
+                   th:class="${newsPage.hasPrevious() ? 'page-link' : 'page-link disabled'}">&lsaquo;</a>
+                <a th:each="pageNum : ${newsPage.pageNumbers}"
+                   th:href="@{/(page=${pageNum})}"
+                   th:class="${pageNum == newsPage.page ? 'page-link active' : 'page-link'}"
+                   th:text="${pageNum + 1}"></a>
+                <a th:href="@{/(page=${newsPage.nextPage})}"
+                   th:class="${newsPage.hasNext() ? 'page-link' : 'page-link disabled'}">&rsaquo;</a>
+                <a th:href="@{/(page=${newsPage.lastPage})}"
+                   th:class="${newsPage.isLast() ? 'page-link disabled' : 'page-link'}">&raquo;</a>
+            </nav>
+        </section>
+    </div>
+</body>
+</html>

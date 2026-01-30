@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title th:text="'검색: ' + ${query}">검색</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="search-result-header">
+            <h2>'<span th:text="${query}"></span>' 검색 결과</h2>
+            <p class="result-count">총 <strong th:text="${resultPage.totalElements}"></strong>건의 뉴스가 검색되었습니다.</p>
+        </section>
+
+        <section class="news-section" th:if="${resultPage.totalElements > 0}">
+            <div class="news-grid">
+                <article class="news-card" th:each="result : ${resultPage.content}">
+                    <div class="news-thumbnail">
+                        <img th:src="${result.news.thumbnailUrl != null ? result.news.thumbnailUrl : '/images/default-news.svg'}"
+                             th:alt="${result.news.title}"
+                             onerror="this.src='/images/default-news.svg'">
+                    </div>
+                    <div class="news-card-body">
+                        <h4 class="news-title">
+                            <a th:href="${result.news.url}" th:utext="${result.highlightedTitle}" target="_blank" rel="noopener"></a>
+                        </h4>
+                        <p class="news-summary" th:utext="${result.highlightedSummary}"></p>
+                    </div>
+                    <div class="news-card-footer">
+                        <span class="news-publisher" th:text="${result.news.publisher}"></span>
+                        <span class="news-time" th:text="${result.news.relativeTime}"></span>
+                    </div>
+                </article>
+            </div>
+
+            <!-- 페이징 -->
+            <nav class="pagination" th:if="${resultPage.totalPages > 1}">
+                <a th:href="@{/search(q=${query}, page=${resultPage.firstPage})}"
+                   th:class="${resultPage.isFirst() ? 'page-link disabled' : 'page-link'}">&laquo;</a>
+                <a th:href="@{/search(q=${query}, page=${resultPage.previousPage})}"
+                   th:class="${resultPage.hasPrevious() ? 'page-link' : 'page-link disabled'}">&lsaquo;</a>
+                <a th:each="pageNum : ${resultPage.pageNumbers}"
+                   th:href="@{/search(q=${query}, page=${pageNum})}"
+                   th:class="${pageNum == resultPage.page ? 'page-link active' : 'page-link'}"
+                   th:text="${pageNum + 1}"></a>
+                <a th:href="@{/search(q=${query}, page=${resultPage.nextPage})}"
+                   th:class="${resultPage.hasNext() ? 'page-link' : 'page-link disabled'}">&rsaquo;</a>
+                <a th:href="@{/search(q=${query}, page=${resultPage.lastPage})}"
+                   th:class="${resultPage.isLast() ? 'page-link disabled' : 'page-link'}">&raquo;</a>
+            </nav>
+        </section>
+
+        <section class="no-results" th:if="${resultPage.totalElements == 0}">
+            <p>검색 결과가 없습니다.</p>
+            <a th:href="@{/}" class="back-home">홈으로 돌아가기</a>
+        </section>
+    </div>
+</body>
+</html>
