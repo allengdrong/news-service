@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NewsService {
 
-    private static final int DEFAULT_PAGE_SIZE = 20;
+    private static final int DEFAULT_PAGE_SIZE = 30;
 
     private final NewsRepository newsRepository;
 
