@@ -65,10 +65,36 @@ Elasticsearch 기반 검색으로:
 
 ---
 
+## 시스템 아키텍처
+
+```
+RSS News Sources
+        ↓
+Spring Scheduler (RSS Ingestion)
+        ↓
+Spring Boot Backend
+        ↓
+Elasticsearch (Search Index)
+        ↓
+Client Request → Search API
+```
+
+---
+
+## API
+
+```http
+GET /api/news?keyword=AI&page=1    # 뉴스 검색
+GET /api/news/latest               # 최신 뉴스 조회
+GET /health                        # Health Check
+```
+
+---
+
 ## 만든 이유
 
 > “뉴스 사이트를 만들고 싶다” 보다는  
-> **실제 개발하던 서비스 구조를 처음부터 끝까지 제 방식대로 직접 설계해보고 싶어서 만든 프로젝트**입니다.
+> **실제 개발하던 서비스 구조더 좋으를 처음부터 끝까지 제 방식대로 직접 설계해보고 싶어서 만든 프로젝트**입니다.
 
 - 외부 데이터 수집
 - 검색엔진 연동
@@ -177,11 +203,6 @@ Elasticsearch 연결 실패 시:
 이를 통해:
 - Kibana / Cloud 로그에서 바로 문제 원인 파악 가능
 - 실제 운영 환경 디버깅 시나리오 그대로 분석 가능
-
-이로 인해:
-- 환경 차이로 인한 오류 최소화
-- 배포 재현성 보장
-- 운영 환경과 로컬 환경 일관성 유지
 
 ---
 
